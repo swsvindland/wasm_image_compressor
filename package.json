@@ -19,16 +19,16 @@
     "publish": "npm run build:wasm && cd wasm/pkg && npm publish"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.0.9",
-    "nuxt": "^3.15.4",
-    "tailwindcss": "^4.0.9",
+    "@tailwindcss/vite": "^4.1.11",
+    "nuxt": "^3.17.6",
+    "tailwindcss": "^4.1.11",
     "wasm_image_compressor": "file:./wasm/pkg"
   },
   "devDependencies": {
-    "@iconify-json/simple-icons": "^1.2.27",
-    "@nuxt/eslint": "^1.1.0",
-    "@vueuse/nuxt": "^12.8.2",
-    "eslint": "^9.21.0",
-    "eslint-config-prettier": "^10.0.2"
+    "@iconify-json/simple-icons": "^1.2.42",
+    "@nuxt/eslint": "^1.5.2",
+    "@vueuse/nuxt": "^13.5.0",
+    "eslint": "^9.30.1",
+    "eslint-config-prettier": "^10.1.5"
   }
 }
