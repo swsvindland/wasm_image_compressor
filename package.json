@@ -16,8 +16,7 @@
     "generate": "nuxt generate",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "update": "node update.js",
-    "publish": "npm run build:wasm"
+    "update": "node update.js"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.12",
