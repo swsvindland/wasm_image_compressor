@@ -14,6 +14,7 @@ export const useImage = () => {
     outputType?: string;
     compressionFactor?: number;
     maxSize?: number;
+    maxFileSize?: number;
     fileOrURL: string | Uint8Array;
     inputType: keyof typeof inputFileEndings;
   }) => {
@@ -23,6 +24,7 @@ export const useImage = () => {
         inputType,
         compressionFactor = 0.5,
         maxSize,
+        maxFileSize,
         outputType = "image/webp",
       } = params;
 
@@ -31,7 +33,8 @@ export const useImage = () => {
         inputType,
         outputType,
         compressionFactor,
-        maxSize
+        maxSize,
+        maxFileSize
       );
 
       return { data: result, success: true };

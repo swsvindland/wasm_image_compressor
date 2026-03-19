@@ -16,11 +16,13 @@ pub async fn convert_image(
     target_type: &str,
     compression_factor: JsValue,
     max_size: JsValue,
+    max_file_size_kb: JsValue,
 ) -> Result<String, JsValue> {
     let compression = parse_compression_factor(&compression_factor);
     let max_size = max_size.as_f64().map(|v| v as u32);
+    let max_file_size_kb = max_file_size_kb.as_f64().map(|v| v as u32);
     let output =
-        convert_image_internal(file_input, src_type, target_type, compression, max_size).await?;
+        convert_image_internal(file_input, src_type, target_type, compression, max_size, max_file_size_kb).await?;
     let final_format = ImageFormat::from_mime_type(target_type).unwrap_or(ImageFormat::WebP);
     let mime_type = MediaType::guess_mime_type(final_format);
     let array = Uint8Array::from(output.as_slice());
@@ -41,10 +43,12 @@ pub async fn convert_image_as_uint8array(
     target_type: &str,
     compression_factor: JsValue,
     max_size: JsValue,
+    max_file_size_kb: JsValue,
 ) -> Result<Uint8Array, JsValue> {
     let compression = parse_compression_factor(&compression_factor);
     let max_size = max_size.as_f64().map(|v| v as u32);
+    let max_file_size_kb = max_file_size_kb.as_f64().map(|v| v as u32);
     let output =
-        convert_image_internal(file_input, src_type, target_type, compression, max_size).await?;
+        convert_image_internal(file_input, src_type, target_type, compression, max_size, max_file_size_kb).await?;
     Ok(Uint8Array::from(output.as_slice()))
 }

@@ -33,6 +33,7 @@ pub async fn convert_image_internal(
     target_type: &str,
     compression_factor: CompressionFactor,
     max_size: Option<u32>,
+    max_file_size_kb: Option<u32>,
 ) -> Result<Vec<u8>, JsValue> {
     let file_data = match file_input {
         v if v.is_string() => fetch_image(&v.as_string().unwrap()).await?,
@@ -50,15 +51,48 @@ pub async fn convert_image_internal(
 
     let src_format = ImageFormat::from_mime_type(src_type);
     let target_format = ImageFormat::from_mime_type(target_type);
-    let processed_img = process_image(img, src_format, target_format, max_size);
+    let mut processed_img = process_image(img, src_format, target_format, max_size);
 
-    let output = parallel_write_image(
+    let mut current_compression = compression_factor;
+    let mut output = parallel_write_image(
         &processed_img,
         target_format,
-        compression_factor,
+        current_compression,
         &file_data,
     )
     .map_err(|_| JsValue::from_str("Error writing image"))?;
+
+    if let Some(max_kb) = max_file_size_kb {
+        let max_bytes = (max_kb as usize) * 1024;
+        while output.len() > max_bytes {
+            // Apply 0.8 compression factor and 10% off width/height
+            match current_compression {
+                CompressionFactor::Value(v) => current_compression = CompressionFactor::Value(v * 0.8),
+                CompressionFactor::Skip => current_compression = CompressionFactor::Value(0.8),
+            }
+
+            let new_width = (processed_img.width() as f32 * 0.9).round() as u32;
+            let new_height = (processed_img.height() as f32 * 0.9).round() as u32;
+
+            if new_width == 0 || new_height == 0 {
+                break;
+            }
+
+            processed_img = processed_img.resize_exact(
+                new_width,
+                new_height,
+                image::imageops::FilterType::Lanczos3,
+            );
+
+            output = parallel_write_image(
+                &processed_img,
+                target_format,
+                current_compression,
+                &file_data,
+            )
+            .map_err(|_| JsValue::from_str("Error writing image"))?;
+        }
+    }
 
     Ok(output)
 }

@@ -4,6 +4,7 @@ const { convertImage, inputFileEndings, downloadImage } = useImage();
 const file = ref<File>();
 const compressionFactor = ref<number>(1);
 const maxSize = ref<number>(2048);
+const maxFileSize = ref<number>(500);
 const outputType = ref("image/webp" as keyof typeof inputFileEndings);
 
 const trimFileExtension = (filename: string) => {
@@ -27,6 +28,7 @@ const startConversion = async () => {
           outputType: outputType.value,
           compressionFactor: compressionFactor.value,
           maxSize: maxSize.value,
+          maxFileSize: maxFileSize.value,
           fileOrURL: new Uint8Array(res as ArrayBuffer),
           inputType: file.value.type as keyof typeof inputFileEndings,
         };
@@ -72,6 +74,12 @@ const startConversion = async () => {
         name="maxSize"
         label="Max size (width or height)"
         placeholder="Max size"
+      />
+      <InputNumber
+        v-model="maxFileSize"
+        name="maxFileSize"
+        label="Max file size (kB)"
+        placeholder="Max file size"
       />
       <InputFile v-model:file="file" />
       <InputSelect

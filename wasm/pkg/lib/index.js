@@ -138,14 +138,15 @@ function makeMutClosure(arg0, arg1, dtor, f) {
  * @param {string} target_type
  * @param {any} compression_factor
  * @param {any} max_size
+ * @param {any} max_file_size_kb
  * @returns {Promise<Uint8Array>}
  */
-export function convertImageAsUint8Array(file_input, src_type, target_type, compression_factor, max_size) {
+export function convertImageAsUint8Array(file_input, src_type, target_type, compression_factor, max_size, max_file_size_kb) {
     const ptr0 = passStringToWasm0(src_type, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     const len0 = WASM_VECTOR_LEN;
     const ptr1 = passStringToWasm0(target_type, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     const len1 = WASM_VECTOR_LEN;
-    const ret = wasm.convertImageAsUint8Array(file_input, ptr0, len0, ptr1, len1, compression_factor, max_size);
+    const ret = wasm.convertImageAsUint8Array(file_input, ptr0, len0, ptr1, len1, compression_factor, max_size, max_file_size_kb);
     return ret;
 }
 
@@ -155,14 +156,15 @@ export function convertImageAsUint8Array(file_input, src_type, target_type, comp
  * @param {string} target_type
  * @param {any} compression_factor
  * @param {any} max_size
+ * @param {any} max_file_size_kb
  * @returns {Promise<string>}
  */
-export function convertImage(file_input, src_type, target_type, compression_factor, max_size) {
+export function convertImage(file_input, src_type, target_type, compression_factor, max_size, max_file_size_kb) {
     const ptr0 = passStringToWasm0(src_type, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     const len0 = WASM_VECTOR_LEN;
     const ptr1 = passStringToWasm0(target_type, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     const len1 = WASM_VECTOR_LEN;
-    const ret = wasm.convertImage(file_input, ptr0, len0, ptr1, len1, compression_factor, max_size);
+    const ret = wasm.convertImage(file_input, ptr0, len0, ptr1, len1, compression_factor, max_size, max_file_size_kb);
     return ret;
 }
 
