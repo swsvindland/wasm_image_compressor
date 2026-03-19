@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-export function convertImage(file_input: any, src_type: string, target_type: string, compression_factor: any): Promise<string>;
 export function convertImageAsUint8Array(file_input: any, src_type: string, target_type: string, compression_factor: any): Promise<Uint8Array>;
+export function convertImage(file_input: any, src_type: string, target_type: string, compression_factor: any): Promise<string>;
 /**
  * Chroma subsampling format
  */
@@ -36,8 +36,8 @@ export interface InitOutput {
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_export_5: WebAssembly.Table;
-  readonly closure64_externref_shim: (a: number, b: number, c: any) => void;
-  readonly closure107_externref_shim: (a: number, b: number, c: any, d: any) => void;
+  readonly closure62_externref_shim: (a: number, b: number, c: any) => void;
+  readonly closure109_externref_shim: (a: number, b: number, c: any, d: any) => void;
   readonly __wbindgen_start: () => void;
 }
 

@@ -1,4 +1,4 @@
-import { convertImage as wasmConvertImage } from "wasm_image_compressor";
+import { convertImage as wasmConvertImage } from "../wasm/pkg/lib/index";
 
 export const useImage = () => {
   const inputFileEndings = {

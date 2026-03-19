@@ -137,22 +137,6 @@ function makeMutClosure(arg0, arg1, dtor, f) {
  * @param {string} src_type
  * @param {string} target_type
  * @param {any} compression_factor
- * @returns {Promise<string>}
- */
-export function convertImage(file_input, src_type, target_type, compression_factor) {
-    const ptr0 = passStringToWasm0(src_type, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-    const len0 = WASM_VECTOR_LEN;
-    const ptr1 = passStringToWasm0(target_type, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-    const len1 = WASM_VECTOR_LEN;
-    const ret = wasm.convertImage(file_input, ptr0, len0, ptr1, len1, compression_factor);
-    return ret;
-}
-
-/**
- * @param {any} file_input
- * @param {string} src_type
- * @param {string} target_type
- * @param {any} compression_factor
  * @returns {Promise<Uint8Array>}
  */
 export function convertImageAsUint8Array(file_input, src_type, target_type, compression_factor) {
@@ -164,12 +148,28 @@ export function convertImageAsUint8Array(file_input, src_type, target_type, comp
     return ret;
 }
 
-function __wbg_adapter_26(arg0, arg1, arg2) {
-    wasm.closure64_externref_shim(arg0, arg1, arg2);
+/**
+ * @param {any} file_input
+ * @param {string} src_type
+ * @param {string} target_type
+ * @param {any} compression_factor
+ * @returns {Promise<string>}
+ */
+export function convertImage(file_input, src_type, target_type, compression_factor) {
+    const ptr0 = passStringToWasm0(src_type, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    const len0 = WASM_VECTOR_LEN;
+    const ptr1 = passStringToWasm0(target_type, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    const len1 = WASM_VECTOR_LEN;
+    const ret = wasm.convertImage(file_input, ptr0, len0, ptr1, len1, compression_factor);
+    return ret;
 }
 
-function __wbg_adapter_65(arg0, arg1, arg2, arg3) {
-    wasm.closure107_externref_shim(arg0, arg1, arg2, arg3);
+function __wbg_adapter_26(arg0, arg1, arg2) {
+    wasm.closure62_externref_shim(arg0, arg1, arg2);
+}
+
+function __wbg_adapter_67(arg0, arg1, arg2, arg3) {
+    wasm.closure109_externref_shim(arg0, arg1, arg2, arg3);
 }
 
 /**
@@ -299,7 +299,7 @@ function __wbg_get_imports() {
                 const a = state0.a;
                 state0.a = 0;
                 try {
-                    return __wbg_adapter_65(a, state0.b, arg0, arg1);
+                    return __wbg_adapter_67(a, state0.b, arg0, arg1);
                 } finally {
                     state0.a = a;
                 }
@@ -394,8 +394,8 @@ function __wbg_get_imports() {
         const ret = false;
         return ret;
     };
-    imports.wbg.__wbindgen_closure_wrapper955 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 65, __wbg_adapter_26);
+    imports.wbg.__wbindgen_closure_wrapper956 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 63, __wbg_adapter_26);
         return ret;
     };
     imports.wbg.__wbindgen_init_externref_table = function() {
