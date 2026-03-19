@@ -2,6 +2,7 @@
   "name": "wasm_image_compressor",
   "version": "1.6.0",
   "private": false,
+  "type": "module",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -10,12 +11,13 @@
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",
-    "build:wasm": "./build.sh",
+    "build:wasm": "node build-wasm.js",
     "preview": "nuxt preview",
     "generate": "nuxt generate",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "update": "node update.js",
     "publish": "npm run build:wasm && cd wasm/pkg && npm publish"
   },
   "dependencies": {

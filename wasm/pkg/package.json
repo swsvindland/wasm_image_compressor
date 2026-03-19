@@ -12,12 +12,10 @@
     "url": "https://github.com/falcosan/wasm_image_compressor"
   },
   "files": [
-    "index_bg.wasm",
-    "index.js",
-    "index.d.ts"
+    "lib/"
   ],
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "sideEffects": [
     "./snippets/*"
   ]
