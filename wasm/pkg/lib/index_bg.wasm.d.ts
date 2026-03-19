@@ -1,8 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
 export const memory: WebAssembly.Memory;
-export const convertImage: (a: any, b: number, c: number, d: number, e: number, f: any) => any;
-export const convertImageAsUint8Array: (a: any, b: number, c: number, d: number, e: number, f: any) => any;
+export const convertImage: (a: any, b: number, c: number, d: number, e: number, f: any, g: any) => any;
+export const convertImageAsUint8Array: (a: any, b: number, c: number, d: number, e: number, f: any, g: any) => any;
 export const __wbindgen_exn_store: (a: number) => void;
 export const __externref_table_alloc: () => number;
 export const __wbindgen_export_2: WebAssembly.Table;

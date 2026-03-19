@@ -1,6 +1,7 @@
 use crate::error::ConvertError;
 use crate::media_type::MediaType;
-use image::{DynamicImage, ImageFormat};
+use exif::{In, Tag};
+use image::{DynamicImage, ImageFormat, ImageReader};
 use js_sys::Uint8Array;
 use pixlzr::{FilterType, Pixlzr};
 use std::io::Cursor;
@@ -31,6 +32,7 @@ pub async fn convert_image_internal(
     src_type: &str,
     target_type: &str,
     compression_factor: CompressionFactor,
+    max_size: Option<u32>,
 ) -> Result<Vec<u8>, JsValue> {
     let file_data = match file_input {
         v if v.is_string() => fetch_image(&v.as_string().unwrap()).await?,
@@ -48,7 +50,7 @@ pub async fn convert_image_internal(
 
     let src_format = ImageFormat::from_mime_type(src_type);
     let target_format = ImageFormat::from_mime_type(target_type);
-    let processed_img = process_image(img, src_format, target_format);
+    let processed_img = process_image(img, src_format, target_format, max_size);
 
     let output = parallel_write_image(
         &processed_img,
@@ -75,31 +77,60 @@ async fn fetch_image(url: &str) -> Result<Vec<u8>, JsValue> {
 }
 
 fn load_image(file: &[u8], source_type: Option<MediaType>) -> Result<DynamicImage, ConvertError> {
-    match source_type {
-        Some(MediaType::Raster(file_type)) => {
-            match image::load_from_memory_with_format(file, file_type) {
-                Ok(img) => Ok(img),
-                Err(_) => image::load_from_memory(file).map_err(|e| {
-                    ConvertError::UnknownFileType(format!("Failed to load image: {}", e))
-                }),
+    let mut reader = ImageReader::new(Cursor::new(file));
+    if let Some(MediaType::Raster(file_type)) = source_type {
+        reader.set_format(file_type);
+    }
+    let mut img = reader.decode().map_err(|e| {
+        ConvertError::UnknownFileType(format!("Failed to load image: {}", e))
+    })?;
+
+    if let Ok(exif) = exif::Reader::new().read_from_container(&mut Cursor::new(file)) {
+        if let Some(field) = exif.get_field(Tag::Orientation, In::PRIMARY) {
+            if let Some(v) = field.value.get_uint(0) {
+                match v {
+                    2 => img = img.flipv(),
+                    3 => img = img.rotate180(),
+                    4 => img = img.fliph(),
+                    5 => img = img.rotate90().flipv(),
+                    6 => img = img.rotate90(),
+                    7 => img = img.rotate270().flipv(),
+                    8 => img = img.rotate270(),
+                    _ => {}
+                }
             }
         }
-        None => image::load_from_memory(file)
-            .map_err(|e| ConvertError::UnknownFileType(format!("Failed to load image: {}", e))),
     }
+
+    Ok(img)
 }
 
 fn process_image(
     img: DynamicImage,
     source_type: Option<ImageFormat>,
     target_type: Option<ImageFormat>,
+    max_size: Option<u32>,
 ) -> DynamicImage {
     let target = target_type.unwrap_or(ImageFormat::WebP);
-    let img = if source_type == Some(ImageFormat::Hdr) {
+    let mut img = if source_type == Some(ImageFormat::Hdr) {
         DynamicImage::ImageRgba8(img.to_rgba8())
     } else {
         img
     };
+
+    if let Some(max_size) = max_size {
+        let (width, height) = (img.width(), img.height());
+        let (n_width, n_height) = if width > height {
+            let n_height = ((max_size as f64 / width as f64) * height as f64).round() as u32;
+            (max_size, n_height.max(1))
+        } else {
+            let n_width = ((max_size as f64 / height as f64) * width as f64).round() as u32;
+            (n_width.max(1), max_size)
+        };
+
+        img = img.resize(n_width, n_height, image::imageops::FilterType::Lanczos3);
+    }
+
     match target {
         ImageFormat::Jpeg
         | ImageFormat::Qoi

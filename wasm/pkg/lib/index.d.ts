@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-export function convertImageAsUint8Array(file_input: any, src_type: string, target_type: string, compression_factor: any): Promise<Uint8Array>;
-export function convertImage(file_input: any, src_type: string, target_type: string, compression_factor: any): Promise<string>;
+export function convertImageAsUint8Array(file_input: any, src_type: string, target_type: string, compression_factor: any, max_size: any): Promise<Uint8Array>;
+export function convertImage(file_input: any, src_type: string, target_type: string, compression_factor: any, max_size: any): Promise<string>;
 /**
  * Chroma subsampling format
  */
@@ -28,8 +28,8 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
-  readonly convertImage: (a: any, b: number, c: number, d: number, e: number, f: any) => any;
-  readonly convertImageAsUint8Array: (a: any, b: number, c: number, d: number, e: number, f: any) => any;
+  readonly convertImage: (a: any, b: number, c: number, d: number, e: number, f: any, g: any) => any;
+  readonly convertImageAsUint8Array: (a: any, b: number, c: number, d: number, e: number, f: any, g: any) => any;
   readonly __wbindgen_exn_store: (a: number) => void;
   readonly __externref_table_alloc: () => number;
   readonly __wbindgen_export_2: WebAssembly.Table;
